@@ -1,0 +1,35 @@
+version: "3.4"
+
+services:
+  rating_db:
+    image: mysql:5.7.28
+    container_name: crowstream_rating_db
+    environment:
+      MYSQL_ROOT_PASSWORD: '1234'
+      MYSQL_DATABASE: 'rating_db'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: '1234'
+    ports:
+      - "3306:3306"
+    volumes:
+      - rating_data:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: crowstream_phpmyadmin
+    depends_on:
+      - rating_db
+    environment:
+      PMA_HOST: 'rating_db'
+    restart: always
+    ports:
+      - "8081:80"
+  rating_ms:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: crowstream_rating_ms
+    container_name: crowstream_rating_ms
+    ports:
+      - '8080:8080'
+volumes:
+  rating_data:
