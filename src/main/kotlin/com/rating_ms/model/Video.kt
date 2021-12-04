@@ -1,11 +1,14 @@
 package com.rating_ms.model
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import org.hibernate.annotations.NotFound
+import org.hibernate.annotations.NotFoundAction
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 
 @Entity
 data class Video (
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
+    @Id
+    val video_id: Long = 0,
 
     @Column
     val likes: Int = 0,
@@ -13,6 +16,10 @@ data class Video (
     @Column
     val dislikes: Int = 0,
 
-    @ManyToMany(mappedBy = "videos")
-    val liked: Set<User>
+    @OneToMany(mappedBy = "video", cascade = [CascadeType.PERSIST,
+        CascadeType.DETACH,
+        CascadeType.REFRESH,
+        CascadeType.REMOVE], fetch=FetchType.LAZY)
+    @JsonIgnoreProperties("video")
+    val liked: MutableList<liked_videos> = mutableListOf()
 )

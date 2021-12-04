@@ -1,18 +1,16 @@
 package com.rating_ms.model
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import javax.persistence.*
-import javax.validation.constraints.NotBlank
 
 @Entity
 data class User (
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0,
-    @Column
-    val name: String = "",
-    @ManyToMany
-    @JoinTable(
-        name = "liked_videos",
-        joinColumns = [JoinColumn(name = "User_id")],
-        inverseJoinColumns = [JoinColumn(name = "Video_id")]
-    )
-    val videos: Set<Video>?
+    @Id
+    var user_id: Long = 0,
+
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.PERSIST,
+        CascadeType.DETACH,
+        CascadeType.REFRESH,
+        CascadeType.REMOVE])
+    @JsonIgnoreProperties("user")
+    val liked: MutableList<liked_videos> = mutableListOf()
 )
