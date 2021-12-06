@@ -6,7 +6,7 @@ import javax.persistence.Column
 import javax.persistence.Embeddable
 
 @Embeddable
-class LikedId(
+data class LikedId(
     @Column(name = "user_id")
     var user_id: Long = 0,
 

@@ -1,4 +1,5 @@
 package com.rating_ms.model
+import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonIdentityInfo
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -9,9 +10,10 @@ import javax.persistence.*
 @Entity
 data class  liked_videos(
     @EmbeddedId
-    var id: LikedId? = null,
+    var id: LikedId,
 
     @JsonIgnoreProperties("liked")
+    @JsonProperty("user")
     @ManyToOne(optional = true, fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "user_id",nullable = true)
     @MapsId("user_id")
