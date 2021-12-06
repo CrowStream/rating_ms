@@ -33,7 +33,7 @@ class UserController(private val userRepository: UserRepository,
 
 
     @GetMapping("/users/{id}")
-    fun getVideoById(@PathVariable(value = "id") videoId: Long): ResponseEntity<User> {
+    fun getVideoById(@PathVariable(value = "id") videoId: String): ResponseEntity<User> {
         return userRepository.findById(videoId).map { video ->
             ResponseEntity.ok(video)
         }.orElse(ResponseEntity.notFound().build())
@@ -54,8 +54,8 @@ class UserController(private val userRepository: UserRepository,
     }
 
     @PutMapping("/users/{id}")
-    fun updateUserById(@PathVariable(value = "id") userId: Long,
-                        @Valid @RequestBody newId: Long): ResponseEntity<User> {
+    fun updateUserById(@PathVariable(value = "id") userId: String,
+                        @Valid @RequestBody newId: String): ResponseEntity<User> {
 
         return userRepository.findById(userId).map { existingUser ->
             existingUser.user_id = newId
@@ -65,8 +65,10 @@ class UserController(private val userRepository: UserRepository,
 
     }
 
-    @PostMapping("/users/likevideo")
+    @PostMapping("/likevideo")
     fun likingVideo(@Valid @RequestBody liked: updateLike): liked_videos {
+        userRepository.save(User(liked.user_id))
+        videoRepository.save(Video(liked.video_id))
         var userliked = userRepository.getById(liked.user_id).liked
         var rated = false;
         var change = false;
@@ -116,7 +118,7 @@ class UserController(private val userRepository: UserRepository,
     }
 
     @DeleteMapping("/users/{id}")
-    fun deleteUserById(@PathVariable(value = "id") Id: Long): ResponseEntity<Void> {
+    fun deleteUserById(@PathVariable(value = "id") Id: String): ResponseEntity<Void> {
 
         return userRepository.findById(Id).map { user  ->
             userRepository.delete(user)

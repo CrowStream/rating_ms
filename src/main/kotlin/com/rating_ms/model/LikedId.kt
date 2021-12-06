@@ -8,7 +8,7 @@ import javax.persistence.Embeddable
 @Embeddable
 data class LikedId(
     @Column(name = "user_id")
-    var user_id: Long = 0,
+    var user_id: String = "",
 
     @Column(name = "video_id")
     var video_id: Long = 0
