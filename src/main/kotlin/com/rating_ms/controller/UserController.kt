@@ -12,6 +12,7 @@ import com.rating_ms.repository.UserVideoRepository
 import com.rating_ms.repository.VideoRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 import javax.xml.bind.DatatypeConverter.parseString
@@ -67,8 +68,18 @@ class UserController(private val userRepository: UserRepository,
 
     @PostMapping("/likevideo")
     fun likingVideo(@Valid @RequestBody liked: updateLike): liked_videos {
-        userRepository.save(User(liked.user_id))
-        videoRepository.save(Video(liked.video_id))
+        try {
+            userRepository.getById(liked.user_id)
+        } catch (e: JpaObjectRetrievalFailureException) {
+            userRepository.save(User(liked.user_id))
+        }
+
+        try {
+            videoRepository.getById(liked.video_id)
+        } catch (e: JpaObjectRetrievalFailureException) {
+            videoRepository.save(Video(liked.video_id))
+        }
+
         var userliked = userRepository.getById(liked.user_id).liked
         var rated = false;
         var change = false;
@@ -103,7 +114,7 @@ class UserController(private val userRepository: UserRepository,
             } else {
                 if(!change){
                     var oldVideo = videoRepository.findById(liked.video_id).get()
-                    val updatedVideo: Video = oldVideo.copy(dislikes = oldVideo.likes + 1)
+                    val updatedVideo: Video = oldVideo.copy(dislikes = oldVideo.dislikes + 1)
                     videoRepository.save(updatedVideo)
                     updating.video = updatedVideo
                 }else{
