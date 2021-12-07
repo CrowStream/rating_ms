@@ -1,10 +1,6 @@
 package com.rating_ms.model
-import com.fasterxml.jackson.annotation.JsonBackReference
-import com.fasterxml.jackson.annotation.JsonIdentityInfo
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.annotations.NotFound
-import org.hibernate.annotations.NotFoundAction
 import javax.persistence.*
 
 @Entity

@@ -1,6 +1,4 @@
 package com.rating_ms.controller
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.rating_ms.model.LikedId
 import com.rating_ms.model.POJOS.liking
 import com.rating_ms.model.POJOS.updateLike
@@ -15,7 +13,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
-import javax.xml.bind.DatatypeConverter.parseString
 
 
 @RestController

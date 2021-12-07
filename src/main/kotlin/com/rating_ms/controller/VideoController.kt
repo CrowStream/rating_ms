@@ -1,11 +1,9 @@
 package com.rating_ms.controller
 import com.rating_ms.model.Video
-import com.rating_ms.model.User
 import com.rating_ms.repository.VideoRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.*
 import javax.validation.Valid
 
 @RestController
