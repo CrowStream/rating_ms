@@ -41,7 +41,7 @@ class UserController(private val userRepository: UserRepository,
     fun getLikedVideos(): liking {
         var response = liking()
         for (i in userVideoRepository.findAll()){
-            if(i.like == 0) {
+            if(i.like == 1) {
                 response.likes.add(i.id)
             }else{
                 response.dislikes.add(i.id)
@@ -49,6 +49,22 @@ class UserController(private val userRepository: UserRepository,
         }
 
         return response;
+    }
+
+    @GetMapping("/getActualLike")
+    fun getActualLike(@Valid @RequestBody liked: LikedId): Int {
+        for (i in userVideoRepository.findAll()){
+            if(i.id.user_id.equals(liked.user_id)) {
+                if(i.id.video_id.equals(liked.video_id)){
+                    if(i.like == 1){
+                        return 1;
+                    }else{
+                        return 2;
+                    }
+                }
+            }
+        }
+        return 0;
     }
 
     @PutMapping("/users/{id}")

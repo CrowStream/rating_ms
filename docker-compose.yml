@@ -13,16 +13,16 @@ services:
       - "3366:3306"
     volumes:
       - rating_data:/var/lib/mysql
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: crowstream_phpmyadmin
-    depends_on:
-      - rating_db
-    environment:
-      PMA_HOST: 'rating_db'
-    restart: always
-    ports:
-      - "8081:80"
+ # phpmyadmin:
+ #   image: phpmyadmin/phpmyadmin
+ #   container_name: crowstream_phpmyadmin
+ #   depends_on:
+ #     - rating_db
+ #   environment:
+ #     PMA_HOST: 'rating_db'
+ #   restart: always
+ #   ports:
+ #     - "8081:80"
   rating_ms:
     image: crowstream2021/crowstream_rating_ms
     container_name: crowstream_rating_ms
@@ -30,5 +30,6 @@ services:
       - '8080:8080'
     depends_on:
       - rating_db
+
 volumes:
   rating_data:
